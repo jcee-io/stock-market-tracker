@@ -1,0 +1,34 @@
+body {
+	background: lightgrey;
+}
+svg {
+	margin: 0 auto;
+	display: block;
+	background: whitesmoke;
+	margin-bottom: 10px;
+}
+
+.stock-box {
+	text-align: center;
+	display: block;
+}
+.tooltip {
+	opacity: 0;
+	position: absolute;
+	pointer-events: none;
+	background: black;
+	color: white;
+	border-radius: 10px;
+	padding: 0 10px;
+	text-align: center;
+	border: black solid 3px;
+}
+
+#tip-content {
+	margin: auto;
+}
+
+.tick line {
+	stroke: black;
+	stroke-dasharray: 10, 5;
+}
