@@ -9,6 +9,12 @@ const handleSubmit = event => {
 	event.preventDefault();
 };
 
+const publishXAxis = (timeExtent, timeFormat) => {
+	socket.emit('x-axis', { timeExtent, timeFormat });
+};
+
+
+
 socket.on('stock', data => {
 	stockList.innerHTML += `
 		<div>
@@ -16,4 +22,8 @@ socket.on('stock', data => {
 	 	  <button>Remove</button>
 	  </div>
 	`;
+});
+
+socket.on('x-axis', ({ timeExtent, timeFormat }) => {
+	formatXAxis(timeExtent, timeFormat);
 });

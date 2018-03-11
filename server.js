@@ -24,4 +24,8 @@ io.on('connection', socket => {
 	socket.on('stock', data => {
 		io.sockets.emit('stock', data);
 	});
+
+	socket.on('x-axis', data => {
+		io.sockets.emit('x-axis', data )
+	});
 });

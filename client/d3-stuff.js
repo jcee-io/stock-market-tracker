@@ -11,6 +11,8 @@ const svg = d3.select('svg')
 
 
 const formatXAxis = (timeExtent, timeFormat) => {
+	timeExtent.forEach((d, i) => timeExtent[i] = new Date(d));
+	
 	svg.selectAll('.x-axis')
 	  .remove();
 
@@ -19,7 +21,7 @@ const formatXAxis = (timeExtent, timeFormat) => {
 	  .range([padding, width - padding]);
 
 	const xAxis = d3.axisBottom(timeScale)
-	  .tickFormat(timeFormat);
+	  .tickFormat(d3.timeFormat(timeFormat));
 
 	svg.append('g')
 		.classed('x-axis', true)
@@ -39,14 +41,14 @@ const getDate = event => {
 	const thisDate = now.getDate();
 	const currentDate = new Date(`${thisMonth} ${thisDate} ${thisYear}`);
 	let olderDate;
-	let timeFormat = d3.timeFormat('%b %Y');
+	let timeFormat = '%b %Y';
 
 	if(timeFactor === 'M') {
 		const tempMonth = thisMonth - timeValue;
 		const selectedMonth = tempMonth <= 0 ? 12 + tempMonth : tempMonth;
 		const selectedYear = tempMonth <= 0 ? thisYear - 1 : thisYear;
 		if(timeValue === 1) {
-			timeFormat = d3.timeFormat('%b %d')
+			timeFormat = '%b %d';
 		}
 
 		olderDate = new Date(`${selectedMonth} ${thisDate} ${selectedYear}`);
@@ -56,7 +58,7 @@ const getDate = event => {
 	};
 
 
-	formatXAxis([olderDate, currentDate], timeFormat);
+	publishXAxis([olderDate, currentDate], timeFormat);
 };
 
 getDate();
