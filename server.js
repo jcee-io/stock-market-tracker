@@ -11,17 +11,22 @@ app.use(express.static('client'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/api/weekly/:stock', async (req, res) => {
-	const data = await alpha.data.weekly(req.params.stock, null, 6);
+app.get('/api/weekly', async (req, res) => {
+	const dateLimit = new Date(req.query.format);
+	const data = await alpha.data.weekly(req.query.stocks);
+	const dates = Object.keys(data['Weekly Time Series'])
+	  .filter(date => dateLimit < new Date(date))
+	  .map(date => ({date,...data['Weekly Time Series'][date]}));
 
-	res.send(data);
+	console.log(dates);
+
+	res.send(data['Weekly Time Series']);
 });
 
-app.get('/api/daily/:stock', async (req, res) => {
-	let stopFlag = false;
-	console.log(new Date().getMonth());
-	const data = await alpha.data.daily(req.params.stock);
-
+app.get('/api/daily', async (req, res) => {
+	console.log(req.query);
+	const data = await alpha.data.daily(req.query.stocks);
+	console.log(data);
 	res.send(data['Time Series (Daily)']);
 });
 
