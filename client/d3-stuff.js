@@ -58,7 +58,7 @@ const getDate = event => {
 	};
 
 
-	publishXAxis([olderDate, currentDate], timeFormat);
+	formatXAxis([olderDate, currentDate], timeFormat);
 };
 
 getDate();

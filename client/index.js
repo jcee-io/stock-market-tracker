@@ -23,7 +23,3 @@ socket.on('stock', data => {
 	  </div>
 	`;
 });
-
-socket.on('x-axis', ({ timeExtent, timeFormat }) => {
-	formatXAxis(timeExtent, timeFormat);
-});
