@@ -1,6 +1,7 @@
 const stockList = document.getElementById('stock-list');
 
 const socket = io.connect(location.host);
+const stocks = ['msft'];
 
 const handleSubmit = event => {
 	socket.emit('stock', {
@@ -9,10 +10,27 @@ const handleSubmit = event => {
 	event.preventDefault();
 };
 
-const publishXAxis = (timeExtent, timeFormat) => {
-	socket.emit('x-axis', { timeExtent, timeFormat });
-};
+const getData = async (timeFrame, timeLength) => {
+	const MM = timeFrame.getMonth() + 1;
+	const YYYY = timeFrame.getFullYear();
+	const DD = timeFrame.getDate();
+	const format = `${YYYY}-${MM}-${DD}`;
 
+
+	if(timeLength[1] === 'Y' || timeLength[0] === '6') {
+		var { data } = await axios.get('/api/weekly', { params: {
+			format,
+			stocks
+		}});
+	} else {
+		var { data } = await axios.get('/api/daily', { params: {
+			format,
+			stocks
+		}});
+	}
+
+	console.log(data);
+};
 
 
 socket.on('stock', data => {

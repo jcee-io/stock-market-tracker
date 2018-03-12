@@ -30,7 +30,7 @@ const formatXAxis = (timeExtent, timeFormat) => {
 };
 
 
-const getDate = event => {
+const getDate = async event => {
 	const now = new Date();
 	const timeLength = event ? event.target.textContent.split(' ') : ['1', 'M'];
 	const timeValue = Number(timeLength[0]);
@@ -59,6 +59,7 @@ const getDate = event => {
 
 
 	formatXAxis([olderDate, currentDate], timeFormat);
+	getData(olderDate, timeLength);
 };
 
 getDate();
