@@ -1,7 +1,8 @@
 const width = 1100;
 const height = 500;
 const padding = 40;
-
+let timeScale;
+let yScale;
 
 
 const svg = d3.select('svg')
@@ -16,7 +17,7 @@ const formatXAxis = (timeExtent, timeFormat) => {
 	svg.selectAll('.x-axis')
 	  .remove();
 
-	const timeScale = d3.scaleTime()
+	timeScale = d3.scaleTime()
 	  .domain(timeExtent)
 	  .range([padding, width - padding]);
 
@@ -34,7 +35,7 @@ const formatYAxis = highest => {
 	  .remove();
 
 	console.log(highest);
-	const yScale = d3.scaleLinear()
+	yScale = d3.scaleLinear()
 	  .domain([0, highest])
 	  .range([height - padding, padding]);
 
@@ -45,6 +46,25 @@ const formatYAxis = highest => {
 	  .attr('transform', `translate(${padding}, 0)`)
 	  .call(yAxis);
 };
+
+const formatLines = (data = []) => {
+	for(let symbol in data) {
+		const line = d3.line()
+		  .x(d => timeScale(new Date(d.date)))
+		  .y(d => yScale(d['1. open']));
+
+		svg.select(`.${symbol}`)
+		  .remove();
+
+		svg.append('path')
+		  .classed(symbol, true)
+		  .datum(data[symbol].dates)
+		  .attr('fill', 'none')
+		  .attr('stroke', 'steelblue')
+		  .attr('d', line);
+	}
+};
+
 const getDate = async event => {
 	const now = new Date();
 	const timeLength = event ? event.target.textContent.split(' ') : ['1', 'M'];
@@ -75,9 +95,10 @@ const getDate = async event => {
 	const data = await getData(olderDate, timeLength);
 
 
-	
+
 	formatXAxis([olderDate, currentDate], timeFormat);
 	formatYAxis(data.highest);
+	formatLines(data.result);
 	
 };
 
