@@ -33,6 +33,8 @@ app.get('/api/weekly', async (req, res) => {
 		const dates = Object.keys(dataset['Weekly Time Series'])
 		  .filter(date => dateLimit < new Date(date))
 		  .map(date => {
+		  	dataset['Weekly Time Series'][date].date = date;
+
 		  	return dataset['Weekly Time Series'][date];
 			});
 
@@ -70,10 +72,10 @@ app.get('/api/daily', async (req, res) => {
 		const dates = Object.keys(dataset['Time Series (Daily)'])
 		  .filter(date => dateLimit < new Date(date))
 		  .map(date => {
+		  	dataset['Time Series (Daily)'][date].date = date;
 		  	return dataset['Time Series (Daily)'][date];
 			});
 
-		console.log(dates);
 		const high = Math.max(...dates.map(d => d['2. high'])) || 0; 
 		highs.push(high);
 
