@@ -17,17 +17,26 @@ app.get('/api/weekly', async (req, res) => {
 	const dates = Object.keys(data['Weekly Time Series'])
 	  .filter(date => dateLimit < new Date(date))
 	  .map(date => ({date,...data['Weekly Time Series'][date]}));
+	const high = Math.max(...dates.map(d => d['2. high']));
+
+
+
 
 	console.log(dates);
-
-	res.send(data['Weekly Time Series']);
+	res.send({ high, dates });
 });
 
 app.get('/api/daily', async (req, res) => {
-	console.log(req.query);
+	const dateLimit = new Date(req.query.format);
 	const data = await alpha.data.daily(req.query.stocks);
-	console.log(data);
-	res.send(data['Time Series (Daily)']);
+	const dates = Object.keys(data['Time Series (Daily)'])
+	  .filter(date => dateLimit < new Date(date))
+	  .map(date => ({date,...data['Time Series (Daily)'][date]}));
+
+	const high = Math.max(...dates.map(d => d['2. high']));
+
+	console.log(dates);	
+	res.send({ high, dates });
 });
 
 app.get('*', (req, res) => res.redirect('/'));
