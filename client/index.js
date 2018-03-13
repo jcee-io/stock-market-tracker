@@ -1,7 +1,7 @@
 const stockList = document.getElementById('stock-list');
 
 const socket = io.connect(location.host);
-const stocks = ['msft'];
+const stocks = ['msft', 'dow', 'amzn'];
 
 const handleSubmit = event => {
 	socket.emit('stock', {
@@ -22,6 +22,8 @@ const getData = async (timeFrame, timeLength) => {
 			format,
 			stocks
 		}});
+
+
 	} else {
 		var { data } = await axios.get('/api/daily', { params: {
 			format,
@@ -29,7 +31,7 @@ const getData = async (timeFrame, timeLength) => {
 		}});
 	}
 
-	console.log(data);
+	return data;
 };
 
 

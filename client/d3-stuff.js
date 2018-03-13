@@ -29,7 +29,22 @@ const formatXAxis = (timeExtent, timeFormat) => {
 	  .call(xAxis);
 };
 
+const formatYAxis = highest => {
+	svg.selectAll('.y-axis')
+	  .remove();
 
+	console.log(highest);
+	const yScale = d3.scaleLinear()
+	  .domain([0, highest])
+	  .range([height - padding, padding]);
+
+	const yAxis = d3.axisLeft(yScale);
+
+	svg.append('g')
+		.classed('y-axis', true)
+	  .attr('transform', `translate(${padding}, 0)`)
+	  .call(yAxis);
+};
 const getDate = async event => {
 	const now = new Date();
 	const timeLength = event ? event.target.textContent.split(' ') : ['1', 'M'];
@@ -57,9 +72,13 @@ const getDate = async event => {
 		olderDate = new Date(`${thisMonth} ${thisDate} ${selectedYear}`);
 	};
 
+	const data = await getData(olderDate, timeLength);
 
+
+	
 	formatXAxis([olderDate, currentDate], timeFormat);
-	getData(olderDate, timeLength);
+	formatYAxis(data.highest);
+	
 };
 
 getDate();
