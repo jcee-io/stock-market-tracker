@@ -35,11 +35,16 @@ const getData = async (timeFrame, timeLength) => {
 };
 
 
-socket.on('stock', data => {
+socket.on('stock', async data => {
 	stockList.innerHTML += `
 		<div>
 	    <p>${data.stock}</p>
 	 	  <button>Remove</button>
 	  </div>
 	`;
+
+	stocks.push(data.stock);
+	const result = await getData(olderDate, timeLength);
+	formatYAxis(result.highest);
+	formatLines(result.result);
 });

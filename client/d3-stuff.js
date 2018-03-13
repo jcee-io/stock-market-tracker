@@ -1,9 +1,10 @@
 const width = 1100;
 const height = 500;
 const padding = 40;
+let timeLength;
 let timeScale;
 let yScale;
-
+let olderDate;
 
 const svg = d3.select('svg')
   .attr('width', width)
@@ -67,7 +68,7 @@ const formatLines = (data = []) => {
 
 const getDate = async event => {
 	const now = new Date();
-	const timeLength = event ? event.target.textContent.split(' ') : ['1', 'M'];
+	timeLength = event ? event.target.textContent.split(' ') : ['1', 'M'];
 	const timeValue = Number(timeLength[0]);
 	const timeFactor = timeLength[1];
 
@@ -75,7 +76,7 @@ const getDate = async event => {
 	const thisMonth = now.getMonth() + 1;
 	const thisDate = now.getDate();
 	const currentDate = new Date(`${thisMonth} ${thisDate} ${thisYear}`);
-	let olderDate;
+	
 	let timeFormat = '%b %Y';
 
 	if(timeFactor === 'M') {
