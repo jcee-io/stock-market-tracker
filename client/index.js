@@ -1,7 +1,7 @@
 const stockList = document.getElementById('stock-list');
 
 const socket = io.connect(location.host);
-const stocks = ['msft', 'dow'];
+const stocks = [];
 
 const handleSubmit = event => {
 	socket.emit('stock', {

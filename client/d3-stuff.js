@@ -4,7 +4,7 @@ const padding = 40;
 let timeLength;
 let timeScale;
 let yScale;
-let olderDate;
+
 
 const svg = d3.select('svg')
   .attr('width', width)
@@ -31,7 +31,7 @@ const formatXAxis = (timeExtent, timeFormat) => {
 	  .call(xAxis);
 };
 
-const formatYAxis = highest => {
+const formatYAxis = (highest = 100) => {
 	svg.selectAll('.y-axis')
 	  .remove();
 
@@ -93,11 +93,18 @@ const getDate = async event => {
 		olderDate = new Date(`${thisMonth} ${thisDate} ${selectedYear}`);
 	};
 
+	formatXAxis([olderDate, currentDate], timeFormat);
+
+	if(stocks.length === 0){
+		formatYAxis();
+		return;
+	}
+
 	const data = await getData(olderDate, timeLength);
 
 
 
-	formatXAxis([olderDate, currentDate], timeFormat);
+	
 	formatYAxis(data.highest);
 	formatLines(data.result);
 	
