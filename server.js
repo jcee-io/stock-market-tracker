@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const socket = require('socket.io');
 const key = process.env.API_KEY || require('./stock-api.js');
 const alpha = require('alphavantage')({ key });
+const Promise = require('bluebird');
+
 const app = express();
 
 
@@ -13,30 +15,74 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/api/weekly', async (req, res) => {
 	const dateLimit = new Date(req.query.format);
-	const data = await alpha.data.weekly(req.query.stocks);
-	const dates = Object.keys(data['Weekly Time Series'])
-	  .filter(date => dateLimit < new Date(date))
-	  .map(date => ({date,...data['Weekly Time Series'][date]}));
-	const high = Math.max(...dates.map(d => d['2. high']));
+	const stockPromises = [];
+	const result = {};
+	const highs = [];
+
+	for(let stock of req.query.stocks) {
+		stockPromises.push(alpha.data.weekly(stock));
+	}
+
+	//Weekly Time Series
+
+	const data = await Promise.all(stockPromises);
+
+	for(let dataset of data) {
+		const symbol = dataset['Meta Data']['2. Symbol'];
+		
+		const dates = Object.keys(dataset['Weekly Time Series'])
+		  .filter(date => dateLimit < new Date(date))
+		  .map(date => {
+		  	return dataset['Weekly Time Series'][date];
+			});
+
+		console.log(dates);
+		const high = Math.max(...dates.map(d => d['2. high'])) || 0; 
+		highs.push(high);
+
+		result[symbol] = { high, dates }
+	}
+
+	const highest = Math.max(...highs);
+
+	res.send({ highest, result });
 
 
-
-
-	console.log(dates);
-	res.send({ high, dates });
 });
 
 app.get('/api/daily', async (req, res) => {
 	const dateLimit = new Date(req.query.format);
-	const data = await alpha.data.daily(req.query.stocks);
-	const dates = Object.keys(data['Time Series (Daily)'])
-	  .filter(date => dateLimit < new Date(date))
-	  .map(date => ({date,...data['Time Series (Daily)'][date]}));
+	const stockPromises = [];
+	const result = {};
+	const highs = [];
 
-	const high = Math.max(...dates.map(d => d['2. high']));
+	for(let stock of req.query.stocks) {
+		stockPromises.push(alpha.data.daily(stock));
+	}
 
-	console.log(dates);	
-	res.send({ high, dates });
+	const data = await Promise.all(stockPromises);
+
+
+	for(let dataset of data) {
+		const symbol = dataset['Meta Data']['2. Symbol'];
+
+		
+		const dates = Object.keys(dataset['Time Series (Daily)'])
+		  .filter(date => dateLimit < new Date(date))
+		  .map(date => {
+		  	return dataset['Time Series (Daily)'][date];
+			});
+
+		console.log(dates);
+		const high = Math.max(...dates.map(d => d['2. high'])) || 0; 
+		highs.push(high);
+
+		result[symbol] = { high, dates }
+	}
+
+	const highest = Math.max(...highs);
+
+	res.send({ highest, result });
 });
 
 app.get('*', (req, res) => res.redirect('/'));
