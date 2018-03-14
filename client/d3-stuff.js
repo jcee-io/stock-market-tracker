@@ -71,7 +71,7 @@ const getDate = async event => {
 	timeLength = event ? event.target.textContent.split(' ') : ['1', 'M'];
 	const timeValue = Number(timeLength[0]);
 	const timeFactor = timeLength[1];
-
+	const oldDOMDate = document.getElementById('old-date');
 	const thisYear = now.getFullYear();
 	const thisMonth = now.getMonth() + 1;
 	const thisDate = now.getDate();
@@ -87,9 +87,11 @@ const getDate = async event => {
 			timeFormat = '%b %d';
 		}
 
+		oldDOMDate.textContent = `${selectedMonth}-${thisDate}-${selectedYear}`;
 		olderDate = new Date(`${selectedMonth} ${thisDate} ${selectedYear}`);
 	} else {
 		const selectedYear = thisYear - timeValue;
+		oldDOMDate.textContent = `${thisMonth}-${thisDate}-${selectedYear}`;
 		olderDate = new Date(`${thisMonth} ${thisDate} ${selectedYear}`);
 	};
 
@@ -107,9 +109,6 @@ const getDate = async event => {
 	}
 
 	const data = await getData(olderDate, timeLength);
-
-	console.log(data);
-
 	
 	formatYAxis(data.highest);
 	formatLines(data.result);
