@@ -6,13 +6,28 @@ let stocks = [];
 const initializeStocks = async () => {
 	const { data } = await axios.get('/api/stocks');
 	stocks = data.stocks;
+
+	for(let stock of stocks) {
+		stockList.innerHTML += `
+			<div id="${stock}">
+		    <p>${stock}</p>
+		 	  <button onclick="removeStock(event)" name="${stock}">Remove</button>
+		  </div>
+		`;
+	}
+};
+
+const removeStock = event => {
+	const node = $(`#${event.target.name}`)[0];
+
+	node.remove();
 };
 
 const handleSubmit = event => {
 	socket.emit('stock', {
 		stock: event.target.stock.value
 	})
-	
+
 	event.preventDefault();
 };
 
@@ -43,9 +58,9 @@ const getData = async (timeFrame, timeLength) => {
 
 socket.on('stock', async data => {
 	stockList.innerHTML += `
-		<div>
+		<div id="${data.stock}">
 	    <p>${data.stock}</p>
-	 	  <button>Remove</button>
+	 	  <button onclick="removeStock(event)" name="${data.stock}">Remove</button>
 	  </div>
 	`;
 
