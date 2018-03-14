@@ -4,7 +4,7 @@ const socket = require('socket.io');
 const key = process.env.API_KEY || require('./stock-api.js');
 const alpha = require('alphavantage')({ key });
 const Promise = require('bluebird');
-
+const db = require('./database/index');
 const app = express();
 
 
@@ -13,8 +13,8 @@ app.use(express.static('client'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/api/stocks', (req, res) => {
-	const stocks = ['msft', 'amzn'];
+app.get('/api/stocks', async (req, res) => {
+	const stocks = await db.getStocks();
 
 	console.log(stocks);
 	res.send({ stocks });
