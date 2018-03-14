@@ -8,6 +8,7 @@ const initializeStocks = async () => {
 	stocks = data.stocks;
 
 	for(let stock of stocks) {
+		console.log(stock);
 		stockList.innerHTML += `
 			<div id="${stock}">
 		    <p>${stock}</p>
@@ -33,11 +34,17 @@ socket.on('remove-stock', async data => {
 });
 
 const handleSubmit = event => {
+	event.preventDefault();
+
+	if(stocks.indexOf(event.target.stock.value) > -1)  {
+		event.target.stock.value = '';
+		return;
+	}
+
 	socket.emit('stock', {
 		stock: event.target.stock.value
-	})
-
-	event.preventDefault();
+	})	
+	event.target.stock.value = '';
 };
 
 const getData = async (timeFrame, timeLength) => {
