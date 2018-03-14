@@ -19,8 +19,10 @@ const initializeStocks = async () => {
 
 const removeStock = event => {
 	const node = $(`#${event.target.name}`)[0];
+	const line = svg.select(`.${event.target.name}`);
 
 	node.remove();
+	line.remove();
 };
 
 const handleSubmit = event => {
