@@ -18,5 +18,5 @@ module.exports.getStocks = async () => {
 };
 
 module.exports.addStocks = stock => {
-	connection.queryAsync(`INSERT INTO Stocks (name) VALUES ?`, stock);
+	connection.queryAsync(`INSERT INTO Stocks (name) VALUES (?)`, stock);
 };
