@@ -31,6 +31,10 @@ socket.on('remove-stock', async data => {
 
 	node.remove();
 	line.remove();
+	
+	const result = await getData(olderDate, timeLength);
+	formatYAxis(result.highest);
+	formatLines(result.result);
 });
 
 const handleSubmit = event => {
