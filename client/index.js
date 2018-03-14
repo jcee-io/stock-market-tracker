@@ -18,12 +18,19 @@ const initializeStocks = async () => {
 };
 
 const removeStock = event => {
-	const node = $(`#${event.target.name}`)[0];
-	const line = svg.select(`.${event.target.name}`);
+	socket.emit('remove-stock', {
+		stock: event.target.name
+	});
+
+};
+
+socket.on('remove-stock', async data => {
+	const node = $(`#${data.stock}`)[0];
+	const line = svg.select(`.${data.stock}`);
 
 	node.remove();
 	line.remove();
-};
+});
 
 const handleSubmit = event => {
 	socket.emit('stock', {
