@@ -117,6 +117,7 @@ io.on('connection', socket => {
 
 	socket.on('remove-stock', data => {
 		io.sockets.emit('remove-stock', data);
+		db.removeStocks(data.stock);
 	});
 
 });

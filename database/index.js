@@ -20,3 +20,7 @@ module.exports.getStocks = async () => {
 module.exports.addStocks = stock => {
 	connection.queryAsync(`INSERT INTO Stocks (name) VALUES (?)`, stock);
 };
+
+module.exports.removeStocks = stock => {
+	connection.queryAsync(`DELETE FROM Stocks WHERE name = ?`, stock);
+};
