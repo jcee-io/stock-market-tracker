@@ -1,7 +1,12 @@
 const stockList = document.getElementById('stock-list');
 
 const socket = io.connect(location.host);
-const stocks = [];
+let stocks = [];
+
+const initializeStocks = async () => {
+	const { data } = await axios.get('/api/stocks');
+	stocks = data.stocks;
+};
 
 const handleSubmit = event => {
 	socket.emit('stock', {
