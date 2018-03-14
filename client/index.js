@@ -12,6 +12,7 @@ const handleSubmit = event => {
 	socket.emit('stock', {
 		stock: event.target.stock.value
 	})
+	
 	event.preventDefault();
 };
 
