@@ -95,6 +95,12 @@ const getDate = async event => {
 
 	formatXAxis([olderDate, currentDate], timeFormat);
 
+	if(stocks.length === 0) {
+		await initializeStocks();
+	};
+
+	console.log(stocks.length, stocks);
+
 	if(stocks.length === 0){
 		formatYAxis();
 		return;
@@ -102,12 +108,13 @@ const getDate = async event => {
 
 	const data = await getData(olderDate, timeLength);
 
-
+	console.log(data);
 
 	
 	formatYAxis(data.highest);
 	formatLines(data.result);
 	
 };
+
 
 getDate();
