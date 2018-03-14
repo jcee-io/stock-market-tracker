@@ -13,6 +13,15 @@ app.use(express.static('client'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/api/stocks', (req, res) => {
+	const stocks = ['msft', 'amzn'];
+
+	console.log(stocks);
+	res.send({ stocks });
+});
+
+
+
 app.get('/api/weekly', async (req, res) => {
 	const dateLimit = new Date(req.query.format);
 	const stockPromises = [];
@@ -22,8 +31,6 @@ app.get('/api/weekly', async (req, res) => {
 	for(let stock of req.query.stocks) {
 		stockPromises.push(alpha.data.weekly(stock));
 	}
-
-	//Weekly Time Series
 
 	const data = await Promise.all(stockPromises);
 
