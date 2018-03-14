@@ -1,2 +1,3 @@
 node_modules
 stock-api.js
+connectionSQL.js
