@@ -14,12 +14,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/api/stocks', async (req, res) => {
-	const stocks = await db.getStocks();
+	let stocks = await db.getStocks();
 
-	console.log(stocks);
+	if(stocks.length > 0) {
+		stocks = stocks.map(d => d.name);
+	}
 	res.send({ stocks });
 });
 
+app.put('/api/stocks', (req, res) => {
+	console.log(res.body);
+	res.sendStatus(200);
+});
 
 
 app.get('/api/weekly', async (req, res) => {
@@ -106,6 +112,7 @@ io.on('connection', socket => {
 
 	socket.on('stock', data => {
 		io.sockets.emit('stock', data);
+		db.addStocks(data.stock);
 	});
 
 });
