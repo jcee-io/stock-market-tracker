@@ -1,5 +1,6 @@
 body {
-	background: lightgrey;
+	background: black;
+	color: whitesmoke;
 }
 svg {
 	margin: 0 auto;
@@ -13,12 +14,24 @@ svg {
 	align-items: center;
 	justify-content: space-around;
 	width: 59.4vw;
-	margin: 0 auto;
+	margin: 10px auto;
 }
 
 .time-frame-buttons button{
 	width: 10%;
 }
+
+#stock-list {
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	padding: 0 10%;
+}
+
+.stock-item {
+	width: 200px;
+}
+
 .stock-box {
 	text-align: center;
 	display: block;
