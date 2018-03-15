@@ -5,7 +5,7 @@ let stockData;
 let timeLength;
 let timeScale;
 let yScale;
-
+let loading = false;
 
 const svg = d3.select('svg')
   .attr('width', width)
@@ -76,6 +76,13 @@ const initialize = async event => {
 	const thisDate = now.getDate();
 	const currentDate = new Date(`${thisMonth} ${thisDate} ${thisYear}`);
 	
+	if(loading) {
+		return;
+	}
+
+
+	loading = true;
+
 	let timeFormat = '%b %Y';
 
 	if(timeFactor === 'M') {
@@ -107,6 +114,8 @@ const initialize = async event => {
 	}
 
 	const data = await getData(olderDate, timeLength);
+	
+	loading = false;
 	
 	formatYAxis(data.highest);
 	formatLines(data.result);
