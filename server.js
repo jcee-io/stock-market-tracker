@@ -13,6 +13,8 @@ app.use(express.static('client'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/favicon.ico', (res,req) => res.end());
+
 app.get('/api/stocks', async (req, res) => {
 	let stocks = await db.getStocks();
 
