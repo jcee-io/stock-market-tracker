@@ -8,7 +8,6 @@ const initializeStocks = async () => {
 	stocks = data.stocks;
 
 	for(let stock of stocks) {
-		console.log(stock);
 		stockList.innerHTML += `
 			<div id="${stock}">
 		    <p>${stock}</p>
@@ -31,7 +30,7 @@ socket.on('remove-stock', async data => {
 
 	node.remove();
 	line.remove();
-	
+
 	const result = await getData(olderDate, timeLength);
 	formatYAxis(result.highest);
 	formatLines(result.result);

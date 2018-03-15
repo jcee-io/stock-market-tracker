@@ -1,6 +1,7 @@
 const width = 1100;
 const height = 500;
 const padding = 40;
+let stockData;
 let timeLength;
 let timeScale;
 let yScale;
@@ -9,8 +10,6 @@ let yScale;
 const svg = d3.select('svg')
   .attr('width', width)
   .attr('height', height);
-
-
 
 const formatXAxis = (timeExtent, timeFormat) => {
 	timeExtent.forEach((d, i) => timeExtent[i] = new Date(d));
@@ -35,7 +34,6 @@ const formatYAxis = (highest = 100) => {
 	svg.selectAll('.y-axis')
 	  .remove();
 
-	console.log(highest);
 	yScale = d3.scaleLinear()
 	  .domain([0, highest])
 	  .range([height - padding, padding]);
@@ -59,6 +57,7 @@ const formatLines = (data = []) => {
 
 		svg.append('path')
 		  .classed(symbol, true)
+		  .classed('lines', true)
 		  .datum(data[symbol].dates)
 		  .attr('fill', 'none')
 		  .attr('stroke', 'steelblue')
@@ -66,7 +65,7 @@ const formatLines = (data = []) => {
 	}
 };
 
-const getDate = async event => {
+const initialize = async event => {
 	const now = new Date();
 	timeLength = event ? event.target.textContent.split(' ') : ['1', 'M'];
 	const timeValue = Number(timeLength[0]);
@@ -101,7 +100,6 @@ const getDate = async event => {
 		await initializeStocks();
 	};
 
-	console.log(stocks.length, stocks);
 
 	if(stocks.length === 0){
 		formatYAxis();
@@ -112,8 +110,7 @@ const getDate = async event => {
 	
 	formatYAxis(data.highest);
 	formatLines(data.result);
-	
 };
 
 
-getDate();
+initialize();
