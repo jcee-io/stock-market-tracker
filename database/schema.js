@@ -5,10 +5,10 @@ module.exports = async connection => {
     console.log(err);
   }
 	
-	
-	await connection.queryAsync('CREATE DATABASE IF NOT EXISTS Stocks');
-	await connection.queryAsync('USE Stocks');
-	
+	if(process.env.NODE_ENV !== 'production') {
+    await connection.queryAsync('CREATE DATABASE IF NOT EXISTS Stocks');
+    await connection.queryAsync('USE Stocks'); 
+  }
 
 	await connection.queryAsync(
 		`CREATE TABLE IF NOT EXISTS Stocks (
