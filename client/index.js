@@ -9,9 +9,9 @@ const initializeStocks = async () => {
 
 	for(let stock of stocks) {
 		stockList.innerHTML += `
-			<div id="${stock}">
-		    <p>${stock}</p>
-		 	  <button onclick="removeStock(event)" name="${stock}">Remove</button>
+			<div class="stock-item" id="${stock}">
+		    <h2>${stock}</h2>
+		 	  <button class="btn btn-outline-light btn-block" onclick="removeStock(event)" name="${stock}">Remove</button>
 		  </div>
 		`;
 	}
@@ -77,9 +77,9 @@ const getData = async (timeFrame, timeLength) => {
 
 socket.on('stock', async data => {
 	stockList.innerHTML += `
-		<div id="${data.stock}">
-	    <p>${data.stock}</p>
-	 	  <button onclick="removeStock(event)" name="${data.stock}">Remove</button>
+		<div class="stock-item" id="${data.stock}">
+	    <h2>${data.stock}</h2>
+	 	  <button class="btn btn-outline-light btn-block" onclick="removeStock(event)" name="${data.stock}">Remove</button>
 	  </div>
 	`;
 
