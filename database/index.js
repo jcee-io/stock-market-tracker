@@ -1,6 +1,6 @@
 const Promise = require('bluebird');
 const db = Promise.promisifyAll(require('mysql2'));
-const connection = db.createConnection(process.env.MARIADB_URL || require('../connectionSQL'));
+const connection = db.createConnection(process.env.CLEARDB_DATABASE_URL || require('../connectionSQL'));
 const schemaConstructor = require('./schema');
 
 schemaConstructor(connection);
