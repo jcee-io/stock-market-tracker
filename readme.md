@@ -1,6 +1,6 @@
 Stock Market Tracker: Trend Assisstant
 ---
-
+LIVE LINK: https://jcruzz-stock-tracker.herokuapp.com/
 This applicattion is used to aid in keeping observing the recent trends of stocks. You simply need ot type in the symbol of the desired stock, and the chart will update dynamically.
 
 Language: Javascript(ES6/ES7/Node), SQL
